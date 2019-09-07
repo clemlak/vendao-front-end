@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import Order from '../order';
 
 const Card = styled.div`
   background-color: #fff;
@@ -8,8 +12,13 @@ const Card = styled.div`
   padding: 15px;
 `;
 
-const Image = styled.img`
+const Image = styled.div`
   width: 100%;
+  height: 180px;
+  background-image: url(${props => props.src});
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
 const Label = styled.p`
@@ -33,16 +42,29 @@ function Product(props) {
     url,
   } = props;
 
+  const [isModalOpen, toggleModal] = useState(false);
+
   return (
-    <Card>
-      <Image src={url} alt={name} />
-      <Label>
-        {name}
-      </Label>
-      <Price>
-        {price}
-      </Price>
-    </Card>
+    <>
+      <Order
+        isOpen={isModalOpen}
+        url={url}
+        name={name}
+        price={price}
+        toggle={() => toggleModal(!isModalOpen)}
+      />
+      <Card
+        onClick={() => toggleModal(!isModalOpen)}
+      >
+        <Image src={url} />
+        <Label>
+          {name}
+        </Label>
+        <Price>
+          {price}
+        </Price>
+      </Card>
+    </>
   );
 }
 
