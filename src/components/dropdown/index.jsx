@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 400;
   width: ${props => props.block && '100%'};
@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const Button = styled.div`
+  font-family: 'Open Sans', sans-serif;
   box-sizing: border-box;
   display: flex;
   position: relative;
@@ -38,6 +39,7 @@ const Button = styled.div`
 `;
 
 const Content = styled.div`
+  font-family: 'Open Sans', sans-serif;
   min-width: 100px;
   position: absolute;
   z-index: 10;
@@ -60,6 +62,7 @@ const Content = styled.div`
 `;
 
 const Option = styled.div`
+  font-family: 'Open Sans', sans-serif;
   cursor: pointer;
 `;
 

@@ -14,7 +14,8 @@ import Pay from '../../routes/pay';
 const GlobalStyle = createGlobalStyle`
   body {
     background-color: #f7f7fa;
-    font-family: 'Source Sans Pro';
+    font-family: 'Open Sans';
+    font-weight: 400;
   }
 `;
 

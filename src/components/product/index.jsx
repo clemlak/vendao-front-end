@@ -23,16 +23,16 @@ const Image = styled.div`
 
 const Label = styled.p`
   margin: 0;
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 const Price = styled.p`
   margin: 0;
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
 `;
 
 function Product(props) {

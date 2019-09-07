@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
 
+import Dropdown from '../dropdown';
+
 const Modal = styled.div`
   position: fixed;
   z-index: 1;
@@ -41,25 +43,25 @@ const Image = styled.div`
 
 const Label = styled.p`
   margin: 0;
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 const Price = styled.p`
   margin: 0;
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
 `;
 
 const Button = styled.button`
   margin-top: 12px;
   width: ${props => props.block && '100%'};
   display: block;
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   background-color: ${props => props.danger ? '#e74c3c' : '#2ecc71'};
   border-radius: 1rem;
   color: #fff;
@@ -71,11 +73,12 @@ const Button = styled.button`
 `;
 
 const Text = styled.p`
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
 `;
 
 function Order(props) {
   const [showQrCode, toggleQrCode] = useState(false);
+  const [ticker, setTicker] = useState();
 
   const {
     isOpen,
@@ -84,6 +87,17 @@ function Order(props) {
     price,
     toggle,
   } = props;
+
+  const options = [
+    {
+      text: 'Ethereum',
+      value: 'ETH',
+    },
+    {
+      text: 'DAI',
+      value: 'DAI',
+    },
+  ];
 
   if (!isOpen) {
     return <></>;
@@ -98,7 +112,7 @@ function Order(props) {
           </Text>
           <QRCode
             size={120}
-            value="https://google.fr"
+            value={`${window.location.hostname}/pay?price=${price}&name=${name}`}
           />
           <Button
             onClick={() => window.location = '/'}
@@ -123,6 +137,12 @@ function Order(props) {
         <Price>
           {price}
         </Price>
+        <Dropdown
+          options={options}
+          text="Select a currency"
+          setValue={val => setTicker(val)}
+          block
+        />
         <Button
           onClick={() => toggleQrCode(!showQrCode)}
           block

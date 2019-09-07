@@ -3,8 +3,17 @@ import React, {
   useState,
 } from 'react';
 import qs from 'query-string';
-import Web3 from 'web3';
 import styled from 'styled-components';
+import {
+  Flex,
+  Box,
+} from 'reflexbox';
+
+import Web3 from 'web3';
+import Torus from '@toruslabs/torus-embed';
+
+
+
 
 const Container = styled.div`
   display: grid;
@@ -20,37 +29,41 @@ const Card = styled.div`
 `;
 
 const Content = styled.p`
-  font-family: 'Source Sans Pro';
-  font-family: 'Source Sans Pro';
+  font-family: 'Open Sans';
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
+`;
+
+const Button = styled.button`
 `;
 
 function Pay() {
   const [web3, setWeb3] = useState();
   const [address, setAddress] = useState();
-  const [txStatus, setTxStatus] = useState();
 
-  useEffect(() => {
-    async function loadWeb3() {
-      if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
+  async function initTorus() {
+    const torus = new Torus();
+    await torus.init();
+    await torus.login();
+    setWeb3(new Web3(torus.provider));
+  }
 
-        try {
-          await window.ethereum.enable();
-          setWeb3(new Web3(window.web3.currentProvider));
-        } catch (err) {
-          console.log(err);
-        }
-      } else if (window.web3) {
-        window.web3 = new Web3(window.web3.currentProvider);
+  async function initInjected() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+
+      try {
+        await window.ethereum.enable();
         setWeb3(new Web3(window.web3.currentProvider));
+      } catch (err) {
+        console.log(err);
       }
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+      setWeb3(new Web3(window.web3.currentProvider));
     }
-
-    loadWeb3();
-  }, []);
+  }
 
   useEffect(() => {
     async function getWallet() {
@@ -63,6 +76,7 @@ function Pay() {
     getWallet();
   }, [web3]);
 
+  /*
   useEffect(() => {
     async function triggerPayment() {
       if (address) {
@@ -76,9 +90,9 @@ function Pay() {
 
     triggerPayment();
   }, [address]);
+  */
 
   const parsed = qs.parse(window.location.search);
-  console.log(parsed);
 
   function displayContent() {
     if (web3) {
@@ -86,7 +100,7 @@ function Pay() {
         <Container>
           <Card>
             <Content>
-              Paying!
+              {`Welcome ${address}!`}
             </Content>
           </Card>
         </Container>
@@ -94,17 +108,31 @@ function Pay() {
     }
 
   return (
-    <Container>
-      <Card>
-        <Content>
-        No wallet found...
-        </Content>
-      </Card>
-    </Container>
+    <>
+      <Content>
+        Connect with:
+      </Content>
+      <Flex>
+        <Box width={1 / 2} padding={3}>
+          <Button
+            onClick={() => initTorus()}
+          >
+            Torus
+          </Button>
+        </Box>
+        <Box width={1 / 2} padding={3}>
+          <Button
+            onClick={() => initInjected()}
+          >
+            MetaMask
+          </Button>
+        </Box>
+      </Flex>
+    </>
   );
 
   }
-  
+
   return displayContent();
 }
 
