@@ -9,6 +9,7 @@ import {
 } from 'styled-components';
 
 import Home from '../../routes/home';
+import Pay from '../../routes/pay';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -24,6 +25,8 @@ function App() {
         <GlobalStyle />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/pay" exact component={Pay} />
+          <Route component={Home} />
         </Switch>
       </>
     </BrowserRouter>
