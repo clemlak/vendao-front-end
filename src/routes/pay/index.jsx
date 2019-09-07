@@ -30,6 +30,7 @@ const Content = styled.p`
 function Pay() {
   const [web3, setWeb3] = useState();
   const [address, setAddress] = useState();
+  const [txStatus, setTxStatus] = useState();
 
   useEffect(() => {
     async function loadWeb3() {
@@ -94,15 +95,16 @@ function Pay() {
 
   return (
     <Container>
-    <Card>
-      <Content>
-       No wallet found...
-      </Content>
-    </Card>
-  </Container>
+      <Card>
+        <Content>
+        No wallet found...
+        </Content>
+      </Card>
+    </Container>
   );
 
   }
+  
   return displayContent();
 }
 
