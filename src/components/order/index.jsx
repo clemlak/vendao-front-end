@@ -154,25 +154,25 @@ function Order(props) {
               Pay with
             </Text>
             <Wallet
-              onClick={() => console.log('squarelink')}
+               onClick={() => window.location('/pay?wallet=squarelink')}>
               block
             >
               Squarelink
             </Wallet>
             <Wallet
-              onClick={() => console.log('torus')}
+               onClick={() => window.location('/pay?wallet=torus')}>
               block
             >
               Torus
             </Wallet>
             <Wallet
-              onClick={() => console.log('Metamask mobile')}
+               onClick={() => window.location('/pay?wallet=injected')}>
               block
             >
               MetaMask Mobile
             </Wallet>
             <Wallet
-              onClick={() => console.log('trust wallet')}
+               onClick={() => window.location('/pay?wallet=injected')}>
               block
             >
               Trust Wallet
