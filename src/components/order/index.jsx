@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 
 import Dropdown from '../dropdown';
 import Tabs from '../tabs';
+import CryptoTabs from '../cryptoTabs';
+
+import CoinbaseCommerce from '../../utils/coinbase-commerce';
 
 const Modal = styled.div`
   position: fixed;
@@ -39,6 +42,7 @@ const Image = styled.div`
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
+  margin-bottom: 15px;
 `;
 
 const Label = styled.p`
@@ -53,6 +57,7 @@ const Price = styled.p`
   font-family: 'Open Sans';
   font-size: 24px;
   font-weight: 700;
+  margin-bottom: 15px;
 `;
 
 const Button = styled.button`
@@ -60,7 +65,7 @@ const Button = styled.button`
   width: ${props => props.block && '100%'};
   display: block;
   font-family: 'Open Sans';
-  font-size: ${props => props.small ? '16px' : '20px'};
+  font-size: ${props => props.small ? '14px' : '18px'};
   font-weight: ${props => props.small ? '400' : '700'};
   background-color: ${props => props.danger ? '#e74c3c' : '#2ecc71'};
   border-radius: 1rem;
@@ -68,19 +73,32 @@ const Button = styled.button`
   border: none;
   padding-top: 8px;
   padding-bottom: 8px;
+  cursor: pointer;
 
   &:focus {
     outline: none;
+  }
+
+  &:disabled {
+    background-color: #95a5a6;
+    color: #ccc;
+    cursor: not-allowed;
   }
 `;
 
 const Text = styled.p`
   font-family: 'Open Sans';
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 10px;
 `;
 
 function Order(props) {
   const [showQrCode, toggleQrCode] = useState(false);
   const [ticker, setTicker] = useState();
+  const [addresses, setAddresses] = useState();
+  const [pricing, setPrincing] = useState();
 
   const {
     isOpen,
@@ -97,12 +115,8 @@ function Order(props) {
       value: 'ETH',
     },
     {
-      text: 'Bitcoin',
-      value: 'BTC',
-    },
-    {
-      text: 'Litecoin',
-      value: 'LTC',
+      text: 'Bitcoin, Litecoin, USDC, ...',
+      value: 'coinbase-commerce',
     },
   ];
 
@@ -111,28 +125,78 @@ function Order(props) {
   }
 
   if (showQrCode) {
-    return (
-      <Modal>
-        <Content centered>
-          <Text>
-            Pay with:
-          </Text>
-          <Tabs
-            price={price}
-            name={name}
-            productId={productId}
-          />
-          <Button
-            onClick={() => window.location = '/'}
-            block
-            small
-          >
-            Done
-          </Button>
-        </Content>
-      </Modal>
-    );
-  }
+    if (ticker === 'ETH') {
+      return (
+        <Modal>
+          <Content centered>
+            <Text>
+              Pay with
+            </Text>
+            <Tabs
+              price={price}
+              name={name}
+              productId={productId}
+            />
+            <Button
+              onClick={() => window.location = '/'}
+              block
+              small
+            >
+              Done
+            </Button>
+          </Content>
+        </Modal>
+      );
+    }
+
+    if (ticker === 'coinbase-commerce') {
+        const commerce = new CoinbaseCommerce('5fbf4d82-a957-4dd1-8ad9-c148c34c19c4');
+
+        const charge = {
+          "name": name,
+          "description": name,
+          "pricing_type": "fixed_price",
+          "local_price": {
+            "amount": '1',
+            "currency": "USD",
+          },
+          "metadata": {
+            "vendor": "coca-cola",
+            "product": "classic",
+            "location": "machine1",
+          }
+        };
+
+      commerce.createCharge(charge)
+        .then((res) => {
+          console.log(res);
+
+          return (
+            <Modal>
+              <Content centered>
+                <Text>
+                  Pay with
+                </Text>
+                <CryptoTabs
+                  addresses={res.addresses}
+                  pricing={res.pricing}
+                />
+                <Button
+                  onClick={() => window.location = '/'}
+                  block
+                  small
+                >
+                  Done
+                </Button>
+              </Content>
+            </Modal>
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }
+    }
 
   return (
     <Modal>
@@ -154,6 +218,7 @@ function Order(props) {
         />
         <Button
           onClick={() => toggleQrCode(!showQrCode)}
+          disabled={!ticker ? true : false}
           block
         >
           Pay

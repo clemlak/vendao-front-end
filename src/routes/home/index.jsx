@@ -10,7 +10,7 @@ import Products from '../../common/products';
 function displayProducts(products) {
   const display = [];
 
-  for (let i = 0; i < products.length / 2; i += 2) {
+  for (let i = 0; i < products.length / 2; i += 1) {
     const rows = [];
 
     for (let j = 0; j < 2; j += 1) {

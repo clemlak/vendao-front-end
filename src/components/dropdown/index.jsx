@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   position: relative;
+  margin-bottom: 30px;
 `;
 
 const Button = styled.div`

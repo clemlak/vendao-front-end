@@ -19,6 +19,7 @@ const Image = styled.div`
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
+  margin-bottom: 15px;
 `;
 
 const Label = styled.p`
