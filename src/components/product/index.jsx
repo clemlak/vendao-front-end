@@ -37,6 +37,7 @@ const Price = styled.p`
 
 function Product(props) {
   const {
+    productId,
     name,
     price,
     url,
@@ -52,6 +53,7 @@ function Product(props) {
         name={name}
         price={price}
         toggle={() => toggleModal(!isModalOpen)}
+        productId={productId}
       />
       <Card
         onClick={() => toggleModal(!isModalOpen)}
@@ -73,5 +75,6 @@ export default Product;
 Product.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
+  productId: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
 };

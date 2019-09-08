@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@toruslabs/torus-embed": "0.0.28",
+    "coinbase-commerce-node": "^1.0.3",
     "prop-types": "^15.7.2",
     "qrcode.react": "^0.9.3",
     "query-string": "^6.8.3",

@@ -3,9 +3,9 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import QRCode from 'qrcode.react';
 
 import Dropdown from '../dropdown';
+import Tabs from '../tabs';
 
 const Modal = styled.div`
   position: fixed;
@@ -60,12 +60,14 @@ const Button = styled.button`
   width: ${props => props.block && '100%'};
   display: block;
   font-family: 'Open Sans';
-  font-size: 24px;
-  font-weight: 700;
+  font-size: ${props => props.small ? '16px' : '20px'};
+  font-weight: ${props => props.small ? '400' : '700'};
   background-color: ${props => props.danger ? '#e74c3c' : '#2ecc71'};
   border-radius: 1rem;
   color: #fff;
   border: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
 
   &:focus {
     outline: none;
@@ -85,6 +87,7 @@ function Order(props) {
     url,
     name,
     price,
+    productId,
     toggle,
   } = props;
 
@@ -94,8 +97,12 @@ function Order(props) {
       value: 'ETH',
     },
     {
-      text: 'DAI',
-      value: 'DAI',
+      text: 'Bitcoin',
+      value: 'BTC',
+    },
+    {
+      text: 'Litecoin',
+      value: 'LTC',
     },
   ];
 
@@ -108,15 +115,17 @@ function Order(props) {
       <Modal>
         <Content centered>
           <Text>
-            {`Pay ${price} to this address:`}
+            Pay with:
           </Text>
-          <QRCode
-            size={120}
-            value={`${window.location.hostname}/pay?price=${price}&name=${name}`}
+          <Tabs
+            price={price}
+            name={name}
+            productId={productId}
           />
           <Button
             onClick={() => window.location = '/'}
             block
+            small
           >
             Done
           </Button>
@@ -166,6 +175,7 @@ Order.propTypes = {
   toggle: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
+  productId: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
 };
 
