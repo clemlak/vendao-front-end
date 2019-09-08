@@ -27,6 +27,7 @@ const Content = styled.div`
   text-align: ${props => props.centered ? 'center' : 'left'};
   background-color: #ffffff;
   width: 400px;
+  max-width: 80%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -67,7 +68,7 @@ const Button = styled.button`
   font-family: 'Open Sans';
   font-size: ${props => props.small ? '14px' : '18px'};
   font-weight: ${props => props.small ? '400' : '700'};
-  background-color: ${props => props.danger ? '#e74c3c' : '#2ecc71'};
+  background-color: ${props => props.cancel ? '#e74c3c' : '#2ecc71'};
   border-radius: 1rem;
   color: #fff;
   border: none;
@@ -83,6 +84,26 @@ const Button = styled.button`
     background-color: #95a5a6;
     color: #ccc;
     cursor: not-allowed;
+  }
+`;
+
+const Wallet = styled.button`
+  margin-top: 12px;
+  width: ${props => props.block && '100%'};
+  display: block;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  font-weight: 400;
+  background-color: #3498db;
+  border-radius: 1rem;
+  color: #fff;
+  border: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -132,17 +153,32 @@ function Order(props) {
             <Text>
               Pay with
             </Text>
-            <Tabs
-              price={price}
-              name={name}
-              productId={productId}
-            />
-            <Button
-              onClick={() => window.location = '/'}
+            <Wallet
+              onClick={() => console.log('squarelink')}
               block
-              small
             >
-              Done
+              Squarelink
+            </Wallet>
+            <Wallet
+              onClick={() => console.log('torus')}
+              block
+            >
+              Torus
+            </Wallet>
+            <Wallet
+              onClick={() => console.log('Metamask mobile')}
+              block
+            >
+              MetaMask Mobile
+            </Wallet>
+            <Wallet
+              onClick={() => console.log('trust wallet')}
+              block
+            >
+              Trust Wallet
+            </Wallet>
+            <Button block small cancel onClick={() => window.location('/')}>
+              Cancel
             </Button>
           </Content>
         </Modal>
@@ -225,7 +261,7 @@ function Order(props) {
         </Button>
         <Button
           onClick={toggle}
-          danger
+          cancel
           block
         >
           Cancel

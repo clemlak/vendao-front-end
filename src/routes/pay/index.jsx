@@ -13,9 +13,6 @@ import Web3 from 'web3';
 import Torus from '@toruslabs/torus-embed';
 import SquareLink from 'squarelink';
 
-import TorusImg from '../../common/img/torus.png';
-import SquareLinkImg from '../../common/img/squarelink.png';
-
 const abi = [{"constant":true,"inputs":[],"name":"backend","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"_vendor","type":"string"},{"internalType":"string","name":"_product","type":"string"}],"name":"backendPurchaseProduct","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vendors","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"vendorNames","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"address","name":"_vendorContract","type":"address"}],"name":"addVendor","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"location","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"_vendor","type":"string"},{"internalType":"string","name":"_product","type":"string"}],"name":"purchaseProduct","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"vendorContracts","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_location","type":"string"},{"internalType":"address","name":"_backend","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"_vendor","type":"string"},{"indexed":false,"internalType":"string","name":"_product","type":"string"},{"indexed":false,"internalType":"uint256","name":"_timestamp","type":"uint256"}],"name":"ProductPurchased","type":"event"}];
 const contractAddress = '0xe0a439d34F3C1ccf83a609202018AA0900Ba3fA9';
 
@@ -63,6 +60,10 @@ function Pay() {
   const [web3, setWeb3] = useState();
   const [address, setAddress] = useState();
 
+  const parsed = qs.parse(window.location.search);
+
+  const { wallet } = parsed;
+
   async function initTorus() {
     const torus = new Torus();
     await torus.init();
@@ -94,6 +95,16 @@ function Pay() {
   }
 
   useEffect(() => {
+    if (wallet === 'squarelink') {
+      initSquarelink();
+    } else if (wallet === 'torus') {
+      initTorus();
+    } else if (wallet === 'injected') {
+      initInjected();
+    }
+  }, []);
+
+  useEffect(() => {
     async function getWallet() {
       if (web3) {
         const addresses = await web3.eth.getAccounts();
@@ -122,8 +133,6 @@ function Pay() {
     purchaseProduct();
   }, [address]);
 
-  const parsed = qs.parse(window.location.search);
-
   function displayContent() {
     if (web3) {
       return (
@@ -140,32 +149,8 @@ function Pay() {
   return (
     <>
       <Content>
-        Connect with:
+        No wallet 😢
       </Content>
-      <Flex>
-        <Box  width={1} spadding={3}>
-          <Logo
-            src={TorusImg}
-          />
-          <Button
-            onClick={() => initTorus()}
-          >
-            Torus
-          </Button>
-        </Box>
-      </Flex>
-      <Flex>
-        <Box width={1} padding={3}>
-        <Logo
-            src={SquareLinkImg}
-          />
-          <Button
-            onClick={() => initSquarelink()}
-          >
-            Squarelink
-          </Button>
-        </Box>
-      </Flex>
     </>
   );
 
