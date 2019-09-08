@@ -139,7 +139,7 @@ function Pay() {
         <Container>
           <Card>
             <Content>
-              {`Paying with address: ${address.substring(0, 6)}...`}
+              {`Paying with address: ${address}...`}
             </Content>
           </Card>
         </Container>

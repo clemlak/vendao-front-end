@@ -154,30 +154,30 @@ function Order(props) {
               Pay with
             </Text>
             <Wallet
-               onClick={() => window.location('/pay?wallet=squarelink')}>
+              onClick={() => window.location = '/pay?wallet=squarelink'}
               block
             >
               Squarelink
             </Wallet>
             <Wallet
-               onClick={() => window.location('/pay?wallet=torus')}>
+              onClick={() => window.location = '/pay?wallet=torus'}
               block
             >
               Torus
             </Wallet>
             <Wallet
-               onClick={() => window.location('/pay?wallet=injected')}>
+              onClick={() => window.location = '/pay?wallet=injected'}
               block
             >
               MetaMask Mobile
             </Wallet>
             <Wallet
-               onClick={() => window.location('/pay?wallet=injected')}>
+              onClick={() => window.location = '/pay?wallet=injected'}
               block
             >
               Trust Wallet
             </Wallet>
-            <Button block small cancel onClick={() => window.location('/')}>
+            <Button block small cancel onClick={() => window.location = '/'}>
               Cancel
             </Button>
           </Content>
@@ -207,26 +207,7 @@ function Order(props) {
         .then((res) => {
           console.log(res);
 
-          return (
-            <Modal>
-              <Content centered>
-                <Text>
-                  Pay with
-                </Text>
-                <CryptoTabs
-                  addresses={res.addresses}
-                  pricing={res.pricing}
-                />
-                <Button
-                  onClick={() => window.location = '/'}
-                  block
-                  small
-                >
-                  Done
-                </Button>
-              </Content>
-            </Modal>
-          );
+          window.location = res.hosted_url;
         })
         .catch((err) => {
           console.log(err);
