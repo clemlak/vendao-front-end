@@ -20,4 +20,4 @@ class CoinbaseCommerce {
 }
 
 
-module.exports = CoinbaseCommerce;
+export default CoinbaseCommerce;
